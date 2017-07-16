@@ -3,12 +3,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.xml.soap.Text;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -67,7 +69,8 @@ public class AccountCreation extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, passwordVar, 10, SpringLayout.WEST, contentPane);
 		contentPane.add(passwordVar);
 		
-		passwordTextField = new JTextField();
+		// the JPasswordField() masks the password
+		passwordTextField = new JPasswordField();
 		sl_contentPane.putConstraint(SpringLayout.NORTH, passwordTextField, 6, SpringLayout.SOUTH, passwordVar);
 		sl_contentPane.putConstraint(SpringLayout.WEST, passwordTextField, 0, SpringLayout.WEST, emailVar);
 		contentPane.add(passwordTextField);
@@ -79,7 +82,7 @@ public class AccountCreation extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, confirmPasswordVar, 0, SpringLayout.WEST, emailVar);
 		contentPane.add(confirmPasswordVar);
 		
-		confirmPasswordTextField = new JTextField();
+		confirmPasswordTextField = new JPasswordField();
 		sl_contentPane.putConstraint(SpringLayout.NORTH, confirmPasswordTextField, 6, SpringLayout.SOUTH, confirmPasswordVar);
 		sl_contentPane.putConstraint(SpringLayout.WEST, confirmPasswordTextField, 0, SpringLayout.WEST, emailVar);
 		contentPane.add(confirmPasswordTextField);
@@ -89,11 +92,22 @@ public class AccountCreation extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, studentRadio, 19, SpringLayout.SOUTH, confirmPasswordTextField);
 		sl_contentPane.putConstraint(SpringLayout.WEST, studentRadio, 10, SpringLayout.WEST, contentPane);
 		contentPane.add(studentRadio);
+		studentRadio.setSelected(true);
 		
 		JRadioButton volunteerRadio = new JRadioButton("Volunteer");
 		sl_contentPane.putConstraint(SpringLayout.NORTH, volunteerRadio, 0, SpringLayout.NORTH, studentRadio);
 		sl_contentPane.putConstraint(SpringLayout.WEST, volunteerRadio, 6, SpringLayout.EAST, studentRadio);
 		contentPane.add(volunteerRadio);
+		volunteerRadio.setSelected(false);
+		
+		// group the buttons
+		ButtonGroup buttons = new ButtonGroup();
+		buttons.add(volunteerRadio);
+		buttons.add(studentRadio);
+		
+		// register listeners for the buttons ?
+
+		
 		
 		JButton finishButton = new JButton("Finish");
 		finishButton.addActionListener(new ActionListener() {
@@ -102,6 +116,20 @@ public class AccountCreation extends JFrame {
 				String emailText = emailTextField.getText();
 				String pwText = passwordTextField.getText();
 				String confirmPwText = confirmPasswordTextField.getText();
+				
+				// handle email text
+				if(!emailText.contains("@") || !emailText.contains(".com")){
+					System.out.println("Not a valid email!");
+				} else {
+					System.out.println("Valid Email!");
+				}
+				
+				// handle radio button
+				if(studentRadio.isSelected()){
+					volunteerRadio.setSelected(false);
+				} else{
+					studentRadio.setEnabled(false);
+				}
 				
 				// check to see the two passwords match
 				if(pwText.equals(confirmPwText)){
